@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+
+<h:head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title><ui:insert name="title">jpets</ui:insert></title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-family);
+            background: #f0f2f5;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 220px;
+            min-height: 100vh;
+            background: #1e293b;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem 1.25rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar-brand h2 {
+            color: #38bdf8;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: .5px;
+        }
+
+        .sidebar-brand small {
+            color: #94a3b8;
+            font-size: .7rem;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .sidebar-nav {
+            padding: .75rem 0;
+            flex: 1;
+        }
+
+        .nav-section {
+            padding: .4rem 1rem .2rem;
+            color: #64748b;
+            font-size: .65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            padding: .55rem 1.25rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: .875rem;
+            border-left: 3px solid transparent;
+            transition: background .15s, color .15s;
+        }
+
+        .nav-item a:hover,
+        .nav-item a.active {
+            background: #0f172a;
+            color: #38bdf8;
+            border-left-color: #38bdf8;
+        }
+
+        .nav-item a .pi { font-size: 1rem; }
+
+        /* ── Main area ── */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .topbar {
+            background: #ffffff;
+            padding: .75rem 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+        }
+
+        .page-content {
+            padding: 1.5rem;
+            flex: 1;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h2>🐾 jpets</h2>
+            <small>Sistema de Gestão</small>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Principal</div>
+            <div class="nav-item">
+                <h:link outcome="/home" styleClass="#{request.servletPath == '/home.xhtml' ? 'active' : ''}">
+                    <i class="pi pi-home"/> Home
+                </h:link>
+            </div>
+            <div class="nav-section">Cadastros</div>
+            <div class="nav-item">
+                <h:link outcome="/funcionario"
+                        styleClass="#{request.servletPath == '/funcionario.xhtml' ? 'active' : ''}">
+                    <i class="pi pi-users"/> Funcionários
+                </h:link>
+            </div>
+        </nav>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="topbar">
+            <span class="topbar-title"><ui:insert name="pageTitle">jpets</ui:insert></span>
+            <div class="topbar-actions">
+                <h:form>
+                    <p:commandButton value="Sair" icon="pi pi-sign-out"
+                                     action="/login?faces-redirect=true"
+                                     styleClass="ui-button-outlined ui-button-sm"/>
+                </h:form>
+            </div>
+        </div>
+
+        <div class="page-content">
+            <ui:insert name="content"/>
+        </div>
+    </div>
+</h:body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:p="primefaces">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Funcionários – jpets</ui:define>
+    <ui:define name="pageTitle">Cadastro de Funcionários</ui:define>
+
+    <ui:define name="content">
+
+        <h:form id="formFuncionario">
+
+            <p:messages id="msgs" closable="true" globalOnly="true" style="margin-bottom:1rem;"/>
+
+            <!-- ══════════════════════════════════════════
+                 CARD: Formulário de cadastro / edição
+            ═══════════════════════════════════════════ -->
+            <p:panel id="panelForm" style="margin-bottom:1.5rem;">
+
+                <f:facet name="header">
+                    <span>
+                        <i class="pi #{funcionarioBean.edicao ? 'pi-pencil' : 'pi-user-plus'}"
+                           style="margin-right:.4rem;"/>
+                        #{funcionarioBean.edicao ? 'Editar Funcionário' : 'Novo Funcionário'}
+                    </span>
+                </f:facet>
+
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:1rem 1.5rem; padding:.25rem 0;">
+
+                    <!-- Nome -->
+                    <div class="field">
+                        <p:outputLabel for="nome" value="Nome completo *"/>
+                        <p:inputText id="nome" value="#{funcionarioBean.funcionario.nome}"
+                                     required="true" requiredMessage="Nome é obrigatório."
+                                     maxlength="120" style="width:100%;"
+                                     placeholder="Ex.: Maria da Silva"/>
+                        <p:message for="nome"/>
+                    </div>
+
+                    <!-- CPF -->
+                    <div class="field">
+                        <p:outputLabel for="cpf" value="CPF *"/>
+                        <p:inputMask id="cpf" value="#{funcionarioBean.funcionario.cpf}"
+                                     mask="999.999.999-99"
+                                     required="true" requiredMessage="CPF é obrigatório."
+                                     style="width:100%;" placeholder="000.000.000-00"/>
+                        <p:message for="cpf"/>
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="field">
+                        <p:outputLabel for="email" value="E-mail *"/>
+                        <p:inputText id="email" value="#{funcionarioBean.funcionario.email}"
+                                     required="true" requiredMessage="E-mail é obrigatório."
+                                     validatorMessage="E-mail inválido."
+                                     maxlength="150" style="width:100%;"
+                                     placeholder="usuario@jpets.com.br">
+                            <f:validateRegex pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"/>
+                        </p:inputText>
+                        <p:message for="email"/>
+                    </div>
+
+                    <!-- Telefone -->
+                    <div class="field">
+                        <p:outputLabel for="telefone" value="Telefone"/>
+                        <p:inputMask id="telefone" value="#{funcionarioBean.funcionario.telefone}"
+                                     mask="(99) 99999-9999"
+                                     style="width:100%;" placeholder="(00) 00000-0000"/>
+                        <p:message for="telefone"/>
+                    </div>
+
+                    <!-- Data de Nascimento -->
+                    <div class="field">
+                        <p:outputLabel for="dataNasc" value="Data de Nascimento"/>
+                        <p:datePicker id="dataNasc"
+                                      value="#{funcionarioBean.funcionario.dataNascimento}"
+                                      pattern="dd/MM/yyyy" showIcon="true"
+                                      maxdate="#{funcionarioBean.hoje}"
+                                      style="width:100%;" placeholder="dd/mm/aaaa"/>
+                        <p:message for="dataNasc"/>
+                    </div>
+
+                    <!-- Data de Admissão -->
+                    <div class="field">
+                        <p:outputLabel for="dataAdm" value="Data de Admissão *"/>
+                        <p:datePicker id="dataAdm"
+                                      value="#{funcionarioBean.funcionario.dataAdmissao}"
+                                      pattern="dd/MM/yyyy" showIcon="true"
+                                      required="true" requiredMessage="Data de admissão é obrigatória."
+                                      style="width:100%;" placeholder="dd/mm/aaaa"/>
+                        <p:message for="dataAdm"/>
+                    </div>
+
+                    <!-- Cargo -->
+                    <div class="field">
+                        <p:outputLabel for="cargo" value="Cargo *"/>
+                        <p:selectOneMenu id="cargo" value="#{funcionarioBean.funcionario.cargo}"
+                                         required="true" requiredMessage="Cargo é obrigatório."
+                                         style="width:100%;">
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true"/>
+                            <f:selectItems value="#{funcionarioBean.cargos}"
+                                           var="c" itemLabel="#{c.descricao}" itemValue="#{c}"/>
+                        </p:selectOneMenu>
+                        <p:message for="cargo"/>
+                    </div>
+
+                    <!-- Salário -->
+                    <div class="field">
+                        <p:outputLabel for="salario" value="Salário (R$)"/>
+                        <p:inputNumber id="salario" value="#{funcionarioBean.funcionario.salario}"
+                                       prefix="R$ " decimalSeparator="," thousandSeparator="."
+                                       minValue="0" maxValue="99999.99"
+                                       style="width:100%;" placeholder="0,00"/>
+                        <p:message for="salario"/>
+                    </div>
+
+                    <!-- Ativo -->
+                    <div class="field" style="display:flex; align-items:center; gap:.5rem; padding-top:1.6rem;">
+                        <p:toggleSwitch id="ativo" value="#{funcionarioBean.funcionario.ativo}"/>
+                        <p:outputLabel for="ativo" value="Funcionário ativo" style="margin:0;"/>
+                    </div>
+
+                </div>
+
+                <!-- Botões -->
+                <div style="display:flex; gap:.75rem; margin-top:1.25rem; border-top:1px solid #e2e8f0; padding-top:1rem;">
+                    <p:commandButton id="btnSalvar"
+                                     value="#{funcionarioBean.edicao ? 'Atualizar' : 'Cadastrar'}"
+                                     icon="pi pi-check"
+                                     action="#{funcionarioBean.salvar}"
+                                     update="formFuncionario"
+                                     styleClass="ui-button-success"/>
+
+                    <p:commandButton value="Cancelar" icon="pi pi-times"
+                                     action="#{funcionarioBean.cancelar}"
+                                     update="formFuncionario"
+                                     immediate="true"
+                                     styleClass="ui-button-secondary"/>
+                </div>
+
+            </p:panel>
+
+            <!-- ══════════════════════════════════════════
+                 CARD: Tabela de funcionários cadastrados
+            ═══════════════════════════════════════════ -->
+            <p:panel>
+
+                <f:facet name="header">
+                    <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                        <span><i class="pi pi-list" style="margin-right:.4rem;"/>Funcionários Cadastrados</span>
+                        <p:commandButton value="Novo" icon="pi pi-plus"
+                                         action="#{funcionarioBean.novoFuncionario}"
+                                         update="formFuncionario"
+                                         immediate="true"
+                                         styleClass="ui-button-outlined ui-button-sm"/>
+                    </div>
+                </f:facet>
+
+                <p:dataTable id="tabelaFuncionarios"
+                             value="#{funcionarioBean.funcionarios}"
+                             var="f"
+                             selection="#{funcionarioBean.selecionado}"
+                             selectionMode="single"
+                             rowKey="#{f.id}"
+                             paginator="true" rows="10"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,20"
+                             currentPageReportTemplate="Exibindo {startRecord}–{endRecord} de {totalRecords}"
+                             emptyMessage="Nenhum funcionário cadastrado."
+                             styleClass="p-datatable-striped p-datatable-sm"
+                             style="width:100%;">
+
+                    <p:column headerText="Nome" sortBy="#{f.nome}" filterBy="#{f.nome}"
+                              filterMatchMode="contains">
+                        <h:outputText value="#{f.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="CPF" style="width:140px;">
+                        <h:outputText value="#{f.cpf}"/>
+                    </p:column>
+
+                    <p:column headerText="E-mail" sortBy="#{f.email}">
+                        <h:outputText value="#{f.email}"/>
+                    </p:column>
+
+                    <p:column headerText="Cargo" sortBy="#{f.cargo.descricao}"
+                              filterBy="#{f.cargo.descricao}" filterMatchMode="contains"
+                              style="width:140px;">
+                        <h:outputText value="#{f.cargo.descricao}"/>
+                    </p:column>
+
+                    <p:column headerText="Admissão" sortBy="#{f.dataAdmissao}" style="width:120px;">
+                        <h:outputText value="#{f.dataAdmissao}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" type="localDate"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Salário" sortBy="#{f.salario}" style="width:120px;">
+                        <h:outputText value="#{f.salario}">
+                            <f:convertNumber type="currency" currencySymbol="R$ "
+                                             groupingUsed="true" minFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Ativo" style="width:80px; text-align:center;">
+                        <p:tag value="Ativo"    severity="success" rendered="#{f.ativo}"/>
+                        <p:tag value="Inativo"  severity="danger"  rendered="#{!f.ativo}"/>
+                    </p:column>
+
+                    <p:column headerText="Ações" style="width:110px; text-align:center;" exportable="false">
+                        <p:commandButton icon="pi pi-pencil" title="Editar"
+                                         styleClass="ui-button-rounded ui-button-outlined ui-button-sm"
+                                         action="#{funcionarioBean.editar(f)}"
+                                         process="@this"
+                                         update="formFuncionario"
+                                         style="margin-right:.3rem;"/>
+
+                        <p:commandButton icon="pi pi-trash" title="Excluir"
+                                         styleClass="ui-button-rounded ui-button-outlined ui-button-danger ui-button-sm"
+                                         action="#{funcionarioBean.setSelecionado(f)}"
+                                         process="@this"
+                                         update="@none"
+                                         oncomplete="PF('dlgConfirmar').show()"/>
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:panel>
+
+        </h:form>
+
+        <!-- ══════════════════════════════════════
+             Dialog de confirmação de exclusão
+        ═══════════════════════════════════════ -->
+        <h:form id="formExcluir">
+            <p:confirmDialog id="dlgConfirmar"
+                             widgetVar="dlgConfirmar"
+                             header="Confirmar Exclusão"
+                             message="Deseja realmente excluir o funcionário selecionado? Esta ação não pode ser desfeita."
+                             severity="warn"
+                             closable="true">
+                <p:commandButton value="Sim, excluir"
+                                 icon="pi pi-trash"
+                                 styleClass="ui-button-danger"
+                                 action="#{funcionarioBean.excluir}"
+                                 update="formFuncionario :msgs"
+                                 oncomplete="PF('dlgConfirmar').hide()"/>
+                <p:commandButton value="Cancelar"
+                                 icon="pi pi-times"
+                                 styleClass="ui-button-secondary"
+                                 onclick="PF('dlgConfirmar').hide(); return false;"
+                                 immediate="true"/>
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
+</html>

@@ -2,7 +2,7 @@
 
 #### Tecnologias utilizadas:
 
-* Eclipse Adoptium JDK 25
+* Eclipse Adoptium JDK 25 (LTS)
 * Apache Tomcat 11
 * Apache Maven 3.9.16
 * Jakarta Servlet 6.1 (fornecido pelo Tomcat 11)

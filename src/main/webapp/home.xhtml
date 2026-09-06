@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="jakarta.faces.html"
+      xmlns:ui="jakarta.faces.facelets"
       xmlns:p="primefaces">
 
-<h:head>
-    <title>Home - jpets</title>
-    <meta charset="UTF-8"/>
-</h:head>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
 
-<h:body>
+    <ui:define name="title">Home – jpets</ui:define>
+    <ui:define name="pageTitle">Home</ui:define>
 
-    <p:panel header="Bem-vindo ao jpets" style="width:600px; margin:2rem auto;">
-        <p>Login realizado com sucesso!</p>
-        <p:commandButton value="Sair" action="/login?faces-redirect=true"
-                         styleClass="ui-button-danger" style="margin-top:1rem;"/>
-    </p:panel>
+    <ui:define name="content">
+        <p:panel header="Bem-vindo ao jpets 🐾" style="max-width:600px;">
+            <p style="margin-bottom:1rem;">
+                Sistema de gestão de petshop. Use o menu lateral para navegar pelos cadastros.
+            </p>
+            <p:commandButton value="Ir para Funcionários"
+                             icon="pi pi-users"
+                             action="/funcionario?faces-redirect=true"
+                             styleClass="ui-button-outlined"/>
+        </p:panel>
+    </ui:define>
 
-</h:body>
+</ui:composition>
 </html>
