@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 
@@ -10,16 +8,15 @@
     <ui:define name="pageTitle">Home</ui:define>
 
     <ui:define name="content">
-        <p:panel header="Bem-vindo ao jpets 🐾" style="max-width:600px;">
+        <p:panel header="Bem-vindo ao JPets 🐾" style="max-width:600px;">
             <p style="margin-bottom:1rem;">
                 Sistema de gestão de petshop. Use o menu lateral para navegar pelos cadastros.
             </p>
-            <p:commandButton value="Ir para Funcionários"
-                             icon="pi pi-users"
-                             action="/funcionario?faces-redirect=true"
-                             styleClass="ui-button-outlined"/>
+            <p:commandButton value="Ir para Funcionários" icon="pi pi-users" action="/funcionario?faces-redirect=true"
+                styleClass="ui-button-outlined" />
         </p:panel>
     </ui:define>
 
 </ui:composition>
+
 </html>
