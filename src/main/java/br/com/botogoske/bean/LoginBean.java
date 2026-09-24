@@ -1,9 +1,9 @@
 package br.com.botogoske.bean;
 
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.inject.Named;
-import jakarta.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
+import javax.enterprise.context.RequestScoped;
 import java.io.Serializable;
 
 @Named("loginBean")

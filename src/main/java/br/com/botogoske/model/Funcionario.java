@@ -21,33 +21,83 @@ public class Funcionario implements Serializable {
         this.dataAdmissao = LocalDate.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCpf() { return cpf; }
-    public void setCpf(String cpf) { this.cpf = cpf; }
+    public String getNome() {
+        return nome;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
+    public String getCpf() {
+        return cpf;
+    }
 
-    public LocalDate getDataNascimento() { return dataNascimento; }
-    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-    public LocalDate getDataAdmissao() { return dataAdmissao; }
-    public void setDataAdmissao(LocalDate dataAdmissao) { this.dataAdmissao = dataAdmissao; }
+    public String getEmail() {
+        return email;
+    }
 
-    public Cargo getCargo() { return cargo; }
-    public void setCargo(Cargo cargo) { this.cargo = cargo; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public Double getSalario() { return salario; }
-    public void setSalario(Double salario) { this.salario = salario; }
+    public String getTelefone() {
+        return telefone;
+    }
 
-    public boolean isAtivo() { return ativo; }
-    public void setAtivo(boolean ativo) { this.ativo = ativo; }
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public LocalDate getDataAdmissao() {
+        return dataAdmissao;
+    }
+
+    public void setDataAdmissao(LocalDate dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
+    }
+
+    public Double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(Double salario) {
+        this.salario = salario;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
 }

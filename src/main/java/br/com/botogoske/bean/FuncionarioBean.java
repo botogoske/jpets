@@ -3,12 +3,13 @@ package br.com.botogoske.bean;
 import br.com.botogoske.model.Cargo;
 import br.com.botogoske.model.Funcionario;
 import br.com.botogoske.service.FuncionarioService;
-import jakarta.annotation.PostConstruct;
-import jakarta.faces.view.ViewScoped;
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
+
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -98,11 +99,23 @@ public class FuncionarioBean implements Serializable {
 
     // getters e setters
 
-    public List<Funcionario> getFuncionarios() { return funcionarios; }
+    public List<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
 
-    public Funcionario getFuncionario() { return funcionario; }
-    public void setFuncionario(Funcionario funcionario) { this.funcionario = funcionario; }
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
 
-    public Funcionario getSelecionado() { return selecionado; }
-    public void setSelecionado(Funcionario selecionado) { this.selecionado = selecionado; }
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public Funcionario getSelecionado() {
+        return selecionado;
+    }
+
+    public void setSelecionado(Funcionario selecionado) {
+        this.selecionado = selecionado;
+    }
 }

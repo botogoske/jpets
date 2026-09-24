@@ -1,9 +1,7 @@
 package br.com.botogoske.config;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.faces.annotation.FacesConfig;
+import javax.enterprise.context.ApplicationScoped;
 
-@FacesConfig
 @ApplicationScoped
 public class JsfConfig {
 }

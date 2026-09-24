@@ -2,11 +2,12 @@ package br.com.botogoske.service;
 
 import br.com.botogoske.model.Cargo;
 import br.com.botogoske.model.Funcionario;
-import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.ApplicationScoped;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -65,10 +66,21 @@ public class FuncionarioService {
     }
 
     public void excluir(Long id) {
-        funcionarios.removeIf(f -> f.getId().equals(id));
+        Iterator<Funcionario> it = funcionarios.iterator();
+        while (it.hasNext()) {
+            if (it.next().getId().equals(id)) {
+                it.remove();
+                break;
+            }
+        }
     }
 
     public Optional<Funcionario> buscarPorId(Long id) {
-        return funcionarios.stream().filter(f -> f.getId().equals(id)).findFirst();
+        for (Funcionario f : funcionarios) {
+            if (f.getId().equals(id)) {
+                return Optional.of(f);
+            }
+        }
+        return Optional.empty();
     }
 }
