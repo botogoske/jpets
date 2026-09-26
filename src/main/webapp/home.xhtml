@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 
@@ -8,13 +9,53 @@
     <ui:define name="pageTitle">Home</ui:define>
 
     <ui:define name="content">
-        <p:panel header="Bem-vindo ao JPets 🐾" style="max-width:600px;">
-            <p style="margin-bottom:1rem;">
-                Sistema de gestão de petshop. Use o menu lateral para navegar pelos cadastros.
-            </p>
-            <p:commandButton value="Ir para Funcionários" icon="pi pi-users" action="/funcionario?faces-redirect=true"
-                styleClass="ui-button-outlined" />
-        </p:panel>
+        <section class="home-intro" aria-labelledby="home-title">
+            <div class="home-intro__header">
+                <span class="home-intro__mark" aria-hidden="true">
+                    <i class="pi pi-heart" />
+                </span>
+                <h2 id="home-title">Bem-vindo ao JPets</h2>
+            </div>
+
+            <div class="home-intro__body">
+                <p>Sistema de gestão de petshop. Escolha uma das opções abaixo para gerenciar os cadastros:</p>
+
+                <nav class="home-actions" aria-label="Cadastros">
+                    <h:link outcome="/funcionario" styleClass="home-action">
+                        <span class="home-action__icon" aria-hidden="true">
+                            <i class="pi pi-id-card" />
+                        </span>
+                        <span class="home-action__copy">
+                            <strong>Funcionários</strong>
+                            <small>Cadastro da equipe</small>
+                        </span>
+                        <i class="pi pi-arrow-right" aria-hidden="true" />
+                    </h:link>
+
+                    <h:link outcome="/tutor" styleClass="home-action">
+                        <span class="home-action__icon" aria-hidden="true">
+                            <i class="pi pi-users" />
+                        </span>
+                        <span class="home-action__copy">
+                            <strong>Tutores</strong>
+                            <small>Responsáveis e contatos</small>
+                        </span>
+                        <i class="pi pi-arrow-right" aria-hidden="true" />
+                    </h:link>
+
+                    <h:link outcome="/pet" styleClass="home-action">
+                        <span class="home-action__icon" aria-hidden="true">
+                            <i class="pi pi-heart" />
+                        </span>
+                        <span class="home-action__copy">
+                            <strong>Pets</strong>
+                            <small>Cadastro dos animais</small>
+                        </span>
+                        <i class="pi pi-arrow-right" aria-hidden="true" />
+                    </h:link>
+                </nav>
+            </div>
+        </section>
     </ui:define>
 
 </ui:composition>

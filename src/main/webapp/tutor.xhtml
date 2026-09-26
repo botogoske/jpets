@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Tutores – JPets</ui:define>
+    <ui:define name="pageTitle">Cadastro de Tutores</ui:define>
+
+    <ui:define name="content">
+        <h:form id="formTutor">
+            <p:messages id="msgs" closable="true" globalOnly="true" />
+
+            <p:panel id="panelForm" styleClass="jpets-panel jpets-form-panel">
+                <f:facet name="header">
+                    <div class="panel-heading">
+                        <span class="panel-heading__title">
+                            <i class="pi #{tutorBean.edicao ? 'pi-pencil' : 'pi-user-plus'}" aria-hidden="true" />
+                            #{tutorBean.edicao ? 'Editar Tutor' : 'Novo Tutor'}
+                        </span>
+                    </div>
+                </f:facet>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <p:outputLabel for="nome" value="Nome completo" />
+                        <p:inputText id="nome" value="#{tutorBean.tutor.nome}" required="true"
+                            requiredMessage="Nome é obrigatório." maxlength="120" placeholder="Ex.: Mariana Costa" />
+                        <p:message for="nome" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="cpf" value="CPF" />
+                        <p:inputMask id="cpf" value="#{tutorBean.tutor.cpf}" mask="999.999.999-99" required="true"
+                            requiredMessage="CPF é obrigatório." placeholder="000.000.000-00" />
+                        <p:message for="cpf" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="email" value="E-mail" />
+                        <p:inputText id="email" value="#{tutorBean.tutor.email}" required="true"
+                            requiredMessage="E-mail é obrigatório." validatorMessage="E-mail inválido." maxlength="150"
+                            placeholder="mariana.costa@email.com">
+                            <f:validateRegex pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$" />
+                        </p:inputText>
+                        <p:message for="email" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="telefone" value="Telefone / WhatsApp" />
+                        <p:inputMask id="telefone" value="#{tutorBean.tutor.telefone}" mask="(99) 99999-9999"
+                            required="true" requiredMessage="Telefone é obrigatório." placeholder="(00) 00000-0000" />
+                        <p:message for="telefone" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="dataNasc" value="Data de Nascimento" />
+                        <p:datePicker id="dataNasc" value="#{tutorBean.tutor.dataNascimento}" pattern="dd/MM/yyyy"
+                            showIcon="true" maxdate="#{tutorBean.hoje}" placeholder="dd/mm/aaaa" />
+                        <p:message for="dataNasc" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="endereco" value="Endereço" />
+                        <p:inputText id="endereco" value="#{tutorBean.tutor.endereco}" maxlength="150"
+                            placeholder="Ex.: Rua das Flores, 123" />
+                        <p:message for="endereco" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="bairro" value="Bairro" />
+                        <p:inputText id="bairro" value="#{tutorBean.tutor.bairro}" maxlength="80" placeholder="Ex.: Centro" />
+                        <p:message for="bairro" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="cidade" value="Cidade" />
+                        <p:inputText id="cidade" value="#{tutorBean.tutor.cidade}" maxlength="80" placeholder="Ex.: Curitiba" />
+                        <p:message for="cidade" />
+                    </div>
+
+                    <div class="field field--switch">
+                        <p:toggleSwitch id="ativo" value="#{tutorBean.tutor.ativo}" />
+                        <p:outputLabel for="ativo" value="Tutor ativo" />
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <p:commandButton id="btnSalvar" value="#{tutorBean.edicao ? 'Atualizar' : 'Cadastrar'}"
+                        icon="pi pi-check" action="#{tutorBean.salvar}" update=":formTutor"
+                        styleClass="jpets-button jpets-button--primary" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" action="#{tutorBean.cancelar}"
+                        update=":formTutor" immediate="true" styleClass="jpets-button jpets-button--secondary" />
+                </div>
+            </p:panel>
+
+            <p:panel styleClass="jpets-panel jpets-list-panel">
+                <f:facet name="header">
+                    <div class="panel-heading">
+                        <span class="panel-heading__title">
+                            <i class="pi pi-list" aria-hidden="true" />
+                            Tutores Cadastrados
+                        </span>
+                        <p:commandButton value="Novo" icon="pi pi-plus" ariaLabel="Cadastrar novo tutor"
+                            action="#{tutorBean.novoTutor}" update=":formTutor" immediate="true"
+                            styleClass="jpets-button jpets-button--ghost" />
+                    </div>
+                </f:facet>
+
+                <div class="table-scroll">
+                    <p:dataTable id="tabelaTutores" value="#{tutorBean.tutores}" var="t"
+                        selection="#{tutorBean.selecionado}" selectionMode="single" rowKey="#{t.id}"
+                        paginator="true" paginatorPosition="bottom" rows="10" reflow="true"
+                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    rowsPerPageTemplate="5,10,20" currentPageReportTemplate="Exibindo {startRecord}–{endRecord} de {totalRecords}"
+                    emptyMessage="Nenhum tutor cadastrado." styleClass="p-datatable-striped p-datatable-sm jpets-table">
+
+                    <p:column headerText="Nome" sortBy="#{t.nome}" filterBy="#{t.nome}" filterMatchMode="contains">
+                        <h:outputText value="#{t.nome}" />
+                    </p:column>
+                    <p:column headerText="CPF" style="width:140px;">
+                        <h:outputText value="#{t.cpf}" />
+                    </p:column>
+                    <p:column headerText="E-mail" sortBy="#{t.email}">
+                        <h:outputText value="#{t.email}" />
+                    </p:column>
+                    <p:column headerText="Telefone" style="width:150px;">
+                        <h:outputText value="#{t.telefone}" />
+                    </p:column>
+                    <p:column headerText="Cidade" sortBy="#{t.cidade}" filterBy="#{t.cidade}"
+                        filterMatchMode="contains" style="width:140px;">
+                        <h:outputText value="#{t.cidade}" />
+                    </p:column>
+                    <p:column headerText="Cadastro" sortBy="#{t.dataCadastro}" style="width:120px;">
+                        <h:outputText value="#{t.dataCadastro}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" type="localDate" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Ativo" style="width:80px; text-align:center;">
+                        <p:tag value="Ativo" severity="success" rendered="#{t.ativo}" />
+                        <p:tag value="Inativo" severity="danger" rendered="#{!t.ativo}" />
+                    </p:column>
+                    <p:column headerText="Ações" style="width:110px; text-align:center;" exportable="false">
+                        <div class="table-actions">
+                            <p:commandButton icon="pi pi-pencil" title="Editar" ariaLabel="Editar tutor"
+                                styleClass="jpets-button jpets-icon-button jpets-icon-button--edit"
+                                action="#{tutorBean.editar(t)}" process="@this" update=":formTutor" />
+                            <p:commandButton icon="pi pi-trash" title="Excluir" ariaLabel="Excluir tutor"
+                                styleClass="jpets-button jpets-icon-button jpets-icon-button--delete"
+                                action="#{tutorBean.setSelecionado(t)}" process="@this" update="@none"
+                                oncomplete="PF('dlgConfirmar').show()" />
+                        </div>
+                    </p:column>
+                </p:dataTable>
+                </div>
+            </p:panel>
+        </h:form>
+
+        <h:form id="formExcluirTutor">
+            <p:confirmDialog id="dlgConfirmar" widgetVar="dlgConfirmar" header="Confirmar Exclusão"
+                message="Deseja realmente excluir o tutor selecionado? Esta ação não pode ser desfeita."
+                severity="warn" closable="true">
+                <p:commandButton value="Sim, excluir" icon="pi pi-trash" styleClass="jpets-button jpets-button--danger"
+                    action="#{tutorBean.excluir}" update=":formTutor"
+                    oncomplete="PF('dlgConfirmar').hide()" />
+                <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="jpets-button jpets-button--secondary"
+                    onclick="PF('dlgConfirmar').hide(); return false;" immediate="true" />
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+
+</html>

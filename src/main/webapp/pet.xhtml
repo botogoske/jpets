@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+
+    <ui:define name="title">Pets – JPets</ui:define>
+    <ui:define name="pageTitle">Cadastro de Pets</ui:define>
+
+    <ui:define name="content">
+        <h:form id="formPet">
+            <p:messages id="msgs" closable="true" globalOnly="true" />
+
+            <p:panel id="panelForm" styleClass="jpets-panel jpets-form-panel">
+                <f:facet name="header">
+                    <div class="panel-heading">
+                        <span class="panel-heading__title">
+                            <i class="pi #{petBean.edicao ? 'pi-pencil' : 'pi-plus-circle'}" aria-hidden="true" />
+                            #{petBean.edicao ? 'Editar Pet' : 'Novo Pet'}
+                        </span>
+                    </div>
+                </f:facet>
+
+                <div class="form-grid">
+                    <div class="field">
+                        <p:outputLabel for="nome" value="Nome do Pet" />
+                        <p:inputText id="nome" value="#{petBean.pet.nome}" required="true"
+                            requiredMessage="Nome do pet é obrigatório." maxlength="80" placeholder="Ex.: Thor" />
+                        <p:message for="nome" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="tutor" value="Tutor Responsável" />
+                        <p:selectOneMenu id="tutor" value="#{petBean.pet.tutor}" converter="#{tutorConverter}"
+                            required="true" requiredMessage="Tutor é obrigatório.">
+                            <f:selectItem itemLabel="Selecione um tutor..." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{petBean.tutores}" var="t" itemLabel="#{t.nome} (CPF: #{t.cpf})"
+                                itemValue="#{t}" />
+                        </p:selectOneMenu>
+                        <p:message for="tutor" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="especie" value="Espécie" />
+                        <p:selectOneMenu id="especie" value="#{petBean.pet.especie}" required="true"
+                            requiredMessage="Espécie é obrigatória.">
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{petBean.especies}" var="e" itemLabel="#{e.descricao}"
+                                itemValue="#{e}" />
+                        </p:selectOneMenu>
+                        <p:message for="especie" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="raca" value="Raça" />
+                        <p:inputText id="raca" value="#{petBean.pet.raca}" maxlength="60"
+                            placeholder="Ex.: Golden Retriever / SRD" />
+                        <p:message for="raca" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="sexo" value="Sexo" />
+                        <p:selectOneMenu id="sexo" value="#{petBean.pet.sexo}">
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{petBean.sexos}" var="s" itemLabel="#{s.descricao}"
+                                itemValue="#{s}" />
+                        </p:selectOneMenu>
+                        <p:message for="sexo" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="porte" value="Porte" />
+                        <p:selectOneMenu id="porte" value="#{petBean.pet.porte}">
+                            <f:selectItem itemLabel="Selecione..." itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{petBean.portes}" var="p" itemLabel="#{p.descricao}"
+                                itemValue="#{p}" />
+                        </p:selectOneMenu>
+                        <p:message for="porte" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="peso" value="Peso (kg)" />
+                        <p:inputNumber id="peso" value="#{petBean.pet.peso}" suffix=" kg" decimalSeparator=","
+                            thousandSeparator="." minValue="0" maxValue="999.99" placeholder="0,00" />
+                        <p:message for="peso" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="dataNasc" value="Data de Nascimento" />
+                        <p:datePicker id="dataNasc" value="#{petBean.pet.dataNascimento}" pattern="dd/MM/yyyy"
+                            showIcon="true" maxdate="#{petBean.hoje}" placeholder="dd/mm/aaaa" />
+                        <p:message for="dataNasc" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="observacoes" value="Observações / Cuidados" />
+                        <p:inputText id="observacoes" value="#{petBean.pet.observacoes}" maxlength="255"
+                            placeholder="Ex.: Alergias, temperamento..." />
+                        <p:message for="observacoes" />
+                    </div>
+
+                    <div class="field field--switch">
+                        <p:toggleSwitch id="ativo" value="#{petBean.pet.ativo}" />
+                        <p:outputLabel for="ativo" value="Pet ativo" />
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <p:commandButton id="btnSalvar" value="#{petBean.edicao ? 'Atualizar' : 'Cadastrar'}"
+                        icon="pi pi-check" action="#{petBean.salvar}" update=":formPet"
+                        styleClass="jpets-button jpets-button--primary" />
+                    <p:commandButton value="Cancelar" icon="pi pi-times" action="#{petBean.cancelar}"
+                        update=":formPet" immediate="true" styleClass="jpets-button jpets-button--secondary" />
+                </div>
+            </p:panel>
+
+            <p:panel styleClass="jpets-panel jpets-list-panel">
+                <f:facet name="header">
+                    <div class="panel-heading">
+                        <span class="panel-heading__title">
+                            <i class="pi pi-list" aria-hidden="true" />
+                            Pets Cadastrados
+                        </span>
+                        <p:commandButton value="Novo" icon="pi pi-plus" ariaLabel="Cadastrar novo pet"
+                            action="#{petBean.novoPet}" update=":formPet" immediate="true"
+                            styleClass="jpets-button jpets-button--ghost" />
+                    </div>
+                </f:facet>
+
+                <div class="table-scroll">
+                    <p:dataTable id="tabelaPets" value="#{petBean.pets}" var="p" selection="#{petBean.selecionado}"
+                        selectionMode="single" rowKey="#{p.id}" paginator="true" paginatorPosition="bottom"
+                        rows="10" reflow="true"
+                    paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                    rowsPerPageTemplate="5,10,20" currentPageReportTemplate="Exibindo {startRecord}–{endRecord} de {totalRecords}"
+                    emptyMessage="Nenhum pet cadastrado." styleClass="p-datatable-striped p-datatable-sm jpets-table">
+
+                    <p:column headerText="Nome" sortBy="#{p.nome}" filterBy="#{p.nome}" filterMatchMode="contains">
+                        <h:outputText value="#{p.nome}" />
+                    </p:column>
+                    <p:column headerText="Espécie" sortBy="#{p.especie.descricao}" filterBy="#{p.especie.descricao}"
+                        filterMatchMode="contains" style="width:130px;">
+                        <h:outputText value="#{p.especie.descricao}" />
+                    </p:column>
+                    <p:column headerText="Raça" sortBy="#{p.raca}" filterBy="#{p.raca}" filterMatchMode="contains"
+                        style="width:140px;">
+                        <h:outputText value="#{empty p.raca ? '-' : p.raca}" />
+                    </p:column>
+                    <p:column headerText="Tutor" sortBy="#{p.tutor.nome}" filterBy="#{p.tutor.nome}"
+                        filterMatchMode="contains">
+                        <h:outputText value="#{p.tutor != null ? p.tutor.nome : 'Sem tutor'}" />
+                    </p:column>
+                    <p:column headerText="Sexo" style="width:100px; text-align:center;">
+                        <h:outputText value="#{p.sexo != null ? p.sexo.descricao : '-'}" />
+                    </p:column>
+                    <p:column headerText="Porte" style="width:110px; text-align:center;">
+                        <h:outputText value="#{p.porte != null ? p.porte.descricao : '-'}" />
+                    </p:column>
+                    <p:column headerText="Peso" sortBy="#{p.peso}" style="width:100px; text-align:right;">
+                        <h:outputText value="#{p.peso}" rendered="#{p.peso != null}">
+                            <f:convertNumber minFractionDigits="1" maxFractionDigits="2" />
+                        </h:outputText>
+                        <h:outputText value=" kg" rendered="#{p.peso != null}" />
+                        <h:outputText value="-" rendered="#{p.peso == null}" />
+                    </p:column>
+                    <p:column headerText="Ativo" style="width:80px; text-align:center;">
+                        <p:tag value="Ativo" severity="success" rendered="#{p.ativo}" />
+                        <p:tag value="Inativo" severity="danger" rendered="#{!p.ativo}" />
+                    </p:column>
+                    <p:column headerText="Ações" style="width:110px; text-align:center;" exportable="false">
+                        <div class="table-actions">
+                            <p:commandButton icon="pi pi-pencil" title="Editar" ariaLabel="Editar pet"
+                                styleClass="jpets-button jpets-icon-button jpets-icon-button--edit"
+                                action="#{petBean.editar(p)}" process="@this" update=":formPet" />
+                            <p:commandButton icon="pi pi-trash" title="Excluir" ariaLabel="Excluir pet"
+                                styleClass="jpets-button jpets-icon-button jpets-icon-button--delete"
+                                action="#{petBean.setSelecionado(p)}" process="@this" update="@none"
+                                oncomplete="PF('dlgConfirmar').show()" />
+                        </div>
+                    </p:column>
+                </p:dataTable>
+                </div>
+            </p:panel>
+        </h:form>
+
+        <h:form id="formExcluirPet">
+            <p:confirmDialog id="dlgConfirmar" widgetVar="dlgConfirmar" header="Confirmar Exclusão"
+                message="Deseja realmente excluir o pet selecionado? Esta ação não pode ser desfeita."
+                severity="warn" closable="true">
+                <p:commandButton value="Sim, excluir" icon="pi pi-trash" styleClass="jpets-button jpets-button--danger"
+                    action="#{petBean.excluir}" update=":formPet"
+                    oncomplete="PF('dlgConfirmar').hide()" />
+                <p:commandButton value="Cancelar" icon="pi pi-times" styleClass="jpets-button jpets-button--secondary"
+                    onclick="PF('dlgConfirmar').hide(); return false;" immediate="true" />
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
+
+</html>
